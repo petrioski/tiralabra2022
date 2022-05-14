@@ -1,4 +1,4 @@
-# tiralab 2022
+# Tiralab 2022
 
 [Project definition](documentation/project_definition.md)
 
