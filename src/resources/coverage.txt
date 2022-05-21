@@ -1,0 +1,10 @@
+Name                        Stmts   Miss Branch BrPart  Cover   Missing
+-----------------------------------------------------------------------
+engine/ai.py                    7      0      2      0   100%
+engine/game.py                 54     25     20      4    47%   15->45, 23-43, 48, 51-55, 62, 73-80, 95
+engine/player.py               29      6      8      0    78%   16, 19, 35, 38-41
+engine/round.py                16      0      6      0   100%
+engine/selections.py            7      0      2      0   100%
+resources/instructions.py       9      5      2      0    55%   3, 7-15, 18-27
+-----------------------------------------------------------------------
+TOTAL                         122     36     40      4    68%
