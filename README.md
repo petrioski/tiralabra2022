@@ -13,3 +13,5 @@
 ## Testing coverage
 
 [Coverage](documentation/coverage/coverage.txt)
+
+[Test report](documentation/test.md)
