@@ -8,7 +8,7 @@ class ui:
         pass
 
     def start(self):
-        plr1 = Player("C1", False)
+        plr1 = Player("Human", False)
         plr2 = Player("Computer", True)
         rps = RockPaperScissors(plr1, plr2)
         ins = Instructions()

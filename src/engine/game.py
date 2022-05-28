@@ -1,33 +1,41 @@
 from engine.player import Player
 from engine.round import Round
-from engine.selections import RPS_object
+# from resources.selections import RPS_object
 from resources.instructions import Instructions
 
 
 class RockPaperScissors:
+    """
+    Game class responsible of looping rounds, handling players' input
+    and keeping score
+    """
+
     def __init__(self, p1: Player, p2: Player) -> None:
         self.plr1 = p1
         self.plr2 = p2
         self.interrupt = False
-        self.max_points = 3
+        self.max_points = 30
+        self.help = Instructions()
 
-    def play_game(self):
+    def play_game(self) -> None:
+        """
+        Loops round of RPS game until conditions for continuing the game are
+        not met
+        """
         while self._continue_game():
             print("=" * 50)
-            plr1_selection = self.plr1.get_answer()
-            plr2_selection = self.plr2.get_answer()
 
-            if plr1_selection == RPS_object.QUIT:
+            round = Round(self.plr1, self.plr2)
+            r, p1_sel, p2_sel, interrupt, show_help = round.new_round()
+
+            if interrupt:
                 self.interrupt = True
                 break
-            elif plr1_selection == RPS_object.HELP:
-                Instructions.game_instructions()
+            elif show_help:
+                self.help.game_instructions()
             else:
-                r = Round(plr1_selection, plr2_selection).new_round()
-                print(
-                    "Objects chosen: "
-                    f"{plr1_selection.name} - {plr2_selection.name}"
-                )
+                # r = Round(plr1_selection, plr2_selection).new_round()
+                print("Objects chosen: " f"{p1_sel.name} - {p2_sel.name}")
                 if r == 0:
                     print("It's a tie!")
                 else:
@@ -42,12 +50,29 @@ class RockPaperScissors:
 
                 print(self._scoreboard())
 
-        self._summary()
+                # send data to markov
+                self.plr1.store_opponent_move(p2_sel)
+                self.plr2.store_opponent_move(p1_sel)
 
-    def _game_score(self):
+        print("=" * 50)
+        print(self._summary())
+
+    def _game_score(self) -> str:
+        """
+        Formats string of current game score
+
+        Returns:
+            str: Game score Player 1 poinst - Player 2 points
+        """
         return f"{self.plr1.points()} - {self.plr2.points()}"
 
-    def _leading_player(self):
+    def _leading_player(self) -> str:
+        """
+        Compares Players points
+
+        Returns:
+            str: Name of leading player
+        """
         if self.plr1.is_leading(self.plr2):
             winner = self.plr1.name
         else:
@@ -55,11 +80,13 @@ class RockPaperScissors:
         return winner
 
     def _summary(self):
-        print("=" * 50)
+        """
+        Prints final score before exiting the game
+        """
         if self.interrupt:
-            print("Game quitted")
+            return "Game quitted"
         else:
-            print(
+            return  (
                 "Final results:\n"
                 f"{self._leading_player()} wins by {self._game_score()}"
             )

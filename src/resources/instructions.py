@@ -20,7 +20,7 @@ Type your answer with a letter
     R - Rock
     P - Paper
     S - Scissors
-    ? - Prints this help text
+    H - Prints this help text
     Q - Quit
         """
 
