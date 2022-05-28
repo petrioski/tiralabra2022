@@ -1,5 +1,6 @@
 from engine.player import Player
 from engine.round import Round
+
 # from resources.selections import RPS_object
 from resources.instructions import Instructions
 
@@ -86,7 +87,7 @@ class RockPaperScissors:
         if self.interrupt:
             return "Game quitted"
         else:
-            return  (
+            return (
                 "Final results:\n"
                 f"{self._leading_player()} wins by {self._game_score()}"
             )

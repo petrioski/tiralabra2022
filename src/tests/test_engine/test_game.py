@@ -2,7 +2,7 @@ from unittest import TestCase
 from unittest.mock import patch
 from engine.player import Player
 from engine.game import RockPaperScissors
-from resources.instructions import Instructions
+# from resources.instructions import Instructions
 
 
 class Test_game(TestCase):
