@@ -40,7 +40,7 @@ class Player:
         String of name and points of player
 
         Returns:
-            str: _description_
+            str: player name and points
         """
         return f"{self.name} {self.__points}"
 

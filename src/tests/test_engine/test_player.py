@@ -1,6 +1,8 @@
 from unittest import TestCase
 from unittest.mock import patch
 from engine.player import Player
+from engine.ai import markovRPS
+from resources.selections import RPS_object as rps
 
 
 class Test_player(TestCase):
@@ -16,6 +18,17 @@ class Test_player(TestCase):
         ans = self.p.get_answer()
         self.assertEqual(ans.name, "ROCK")
 
+    def test_string_representation(self):
+        name = str(self.p)
+        self.assertEqual("Person", name)
 
-# if __name__ == "__main__":
-#     unittest.main()
+    def test_score_representation(self):
+        score = self.p.score()
+        self.assertEqual(score, "Person 0")
+
+    @patch.object(markovRPS, 'update')
+    def test_store_opponent_move(self, mock_update):
+        ai_player = Player("Computer", True)
+        rock = rps("R")
+        ai_player.store_opponent_move(rock)
+        mock_update.assert_called_with(rock)

@@ -51,9 +51,10 @@ class markovRPS(SimpleRPS):
         self.__create_matrix()
         self.observations = 0
         self.prev_choice = None
+        self.choices = self.__create_matrix()
         self.losing_object = Rules().losing_obj
 
-    def __create_matrix(self) -> None:
+    def __create_matrix(self) -> dict:
         """Initializes choices dictionary"""
         choices = dict()
         for p in self.objects:
@@ -66,7 +67,7 @@ class markovRPS(SimpleRPS):
                     choices[p] = dict()
                     choices[p][n] = 0
 
-        self.choices = choices
+        return choices
 
     def update(self, next: rps):
         if self.observations > 0:

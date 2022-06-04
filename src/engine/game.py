@@ -3,6 +3,7 @@ from engine.round import Round
 
 # from resources.selections import RPS_object
 from resources.instructions import Instructions
+from ui.reporter import Report
 
 
 class RockPaperScissors:
@@ -15,8 +16,10 @@ class RockPaperScissors:
         self.plr1 = p1
         self.plr2 = p2
         self.interrupt = False
-        self.max_points = 30
+        self.max_points = 3
+        self.round_count = 1
         self.help = Instructions()
+        self.reporter = Report()
 
     def play_game(self) -> None:
         """
@@ -24,7 +27,7 @@ class RockPaperScissors:
         not met
         """
         while self._continue_game():
-            print("=" * 50)
+            self.reporter.new_round_shoutout(self.round_count)
 
             round = Round(self.plr1, self.plr2)
             r, p1_sel, p2_sel, interrupt, show_help = round.new_round()
@@ -35,10 +38,9 @@ class RockPaperScissors:
             elif show_help:
                 self.help.game_instructions()
             else:
-                # r = Round(plr1_selection, plr2_selection).new_round()
-                print("Objects chosen: " f"{p1_sel.name} - {p2_sel.name}")
+                self.reporter.round_selections(p1_sel.name, p2_sel.name)
                 if r == 0:
-                    print("It's a tie!")
+                    self.reporter.round_draw()
                 else:
                     if r == 1:
                         self.plr1.add_point()
@@ -47,25 +49,27 @@ class RockPaperScissors:
                         self.plr2.add_point()
                         round_victory = self.plr2.name
 
-                    print(f"{round_victory} wins the round!")
+                    self.reporter.round_winner(round_victory)
 
-                print(self._scoreboard())
-
+                self._scoreboard()
+                self.round_count += 1
                 # send data to markov
                 self.plr1.store_opponent_move(p2_sel)
                 self.plr2.store_opponent_move(p1_sel)
 
-        print("=" * 50)
-        print(self._summary())
+        if self.interrupt:
+            self.reporter.game_interrupted()
 
-    def _game_score(self) -> str:
-        """
-        Formats string of current game score
+        self._scoreboard(is_final=True)
 
-        Returns:
-            str: Game score Player 1 poinst - Player 2 points
-        """
-        return f"{self.plr1.points()} - {self.plr2.points()}"
+    # def _game_score(self) -> str:
+    #     """
+    #     Formats string of current game score
+
+    #     Returns:
+    #         str: Game score Player 1 poinst - Player 2 points
+    #     """
+    #     return f"{self.plr1.points()} - {self.plr2.points()}"
 
     def _leading_player(self) -> str:
         """
@@ -80,32 +84,39 @@ class RockPaperScissors:
             winner = self.plr2.name
         return winner
 
-    def _summary(self):
-        """
-        Prints final score before exiting the game
-        """
-        if self.interrupt:
-            return "Game quitted"
-        else:
-            return (
-                "Final results:\n"
-                f"{self._leading_player()} wins by {self._game_score()}"
-            )
+    # def _summary(self):
+    #     """
+    #     Prints final score before exiting the game
+    #     """
+    #     if self.interrupt:
+    #         return "Game quitted"
+    #     else:
+    #         return (
+    #             "Final results:\n"
+    #             f"{self._leading_player()} wins by {self._game_score()}"
+    #         )
 
-    def _scoreboard(self) -> str:
+    def _scoreboard(self, is_final: bool = False):
         """Formulates current game scoreboard
 
         Returns:
             str: scoreboard text
         """
-        result = f"{self.plr1.score()} - {self.plr2.score()}"
+        point_difference = abs(self.plr1.points() - self.plr2.points())
+        self.reporter.game_score(self.plr1.points(), self.plr2.points())
 
-        if self.plr1.points() == self.plr2.points():
-            return result + "\n" "Game is at draw"
+        if point_difference == 0:
+            self.reporter.game_status_even(is_final)
+        # else:
+            # if not is_final:
+            #     self.reporter.game_leader(
+            #         self._leading_player(), point_difference, is_final
+            #     )
         else:
-            winner = self._leading_player()
+            self.reporter.game_leader(
+                self._leading_player(), point_difference, is_final
+            )
 
-        return f"{winner} leads {self._game_score()}"
 
     def _continue_game(self) -> bool:
         """Checks conditions if game can continue.

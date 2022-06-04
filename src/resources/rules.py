@@ -1,3 +1,4 @@
+from re import I
 from resources.selections import RPS_object as rps
 
 
@@ -17,9 +18,9 @@ class Rules:
             rps.ROCK: {rps.SCISSORS},
             rps.SCISSORS: {rps.PAPER},
         }
-        self.losing_obj = self._invert_dict()
+        self.losing_obj = self._invert_dict(self.winning_obj)
 
-    def _invert_dict(self) -> dict:
+    def _invert_dict(self, w_obj: dict) -> dict:
         """
         Inverts the winning_obj dictionary
 
@@ -27,10 +28,12 @@ class Rules:
             dict: dictionary of RPS objects.
         """
         losing_objects = dict()  # objects the key loses to
-        for key, key_wins_set in self.winning_obj.items():
+        for key, key_wins_set in w_obj.items():
             for losing in key_wins_set:
-                if losing in losing_objects:
-                    losing_objects[losing] = losing_objects[losing].add(key)
+                if losing in losing_objects.keys():
+                    get_set = losing_objects.get(losing)
+                    get_set.add(key)
+                    losing_objects[losing] = get_set
                 else:
                     losing_objects[losing] = {key}
 
