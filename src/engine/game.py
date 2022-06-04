@@ -108,15 +108,14 @@ class RockPaperScissors:
         if point_difference == 0:
             self.reporter.game_status_even(is_final)
         # else:
-            # if not is_final:
-            #     self.reporter.game_leader(
-            #         self._leading_player(), point_difference, is_final
-            #     )
+        # if not is_final:
+        #     self.reporter.game_leader(
+        #         self._leading_player(), point_difference, is_final
+        #     )
         else:
             self.reporter.game_leader(
                 self._leading_player(), point_difference, is_final
             )
-
 
     def _continue_game(self) -> bool:
         """Checks conditions if game can continue.

@@ -1,4 +1,3 @@
-from re import I
 from resources.selections import RPS_object as rps
 
 
