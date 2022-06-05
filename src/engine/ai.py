@@ -1,6 +1,7 @@
 import random
 from resources.selections import RPS_object as rps
 from resources.rules import Rules
+from itertools import product
 
 
 class SimpleRPS:
@@ -46,10 +47,11 @@ class markovRPS(SimpleRPS):
             to do: change this to Markov matrix
     """
 
-    def __init__(self) -> None:
+    def __init__(self, history_length: int = 1) -> None:
         super().__init__()
-        self.__create_matrix()
-        self.observations = 0
+        self.history_len = history_length
+        self.observation_count = 0
+        self.obs_list = list()
         self.prev_choice = None
         self.choices = self.__create_matrix()
         self.losing_object = Rules().losing_obj
@@ -57,7 +59,8 @@ class markovRPS(SimpleRPS):
     def __create_matrix(self) -> dict:
         """Initializes choices dictionary"""
         choices = dict()
-        for p in self.objects:
+        key_space = product(self.objects, repeat=self.history_len)
+        for p in key_space:
             for n in self.objects:
                 if p in choices:
                     # update
@@ -70,14 +73,19 @@ class markovRPS(SimpleRPS):
         return choices
 
     def update(self, next: rps):
-        if self.observations > 0:
+        if self.observation_count > 0:
             self.choices[self.prev_choice][next] += 1
-        self.observations += 1
-        self.prev_choice = next
+        self._add_observation(next)
+
+    def _add_observation(self, next: rps):
+        self.observation_count += 1
+        self.obs_list.append(next)
+        min_obs = min(self.history_len, len(self.obs_list))
+        self.prev_choice = tuple(self.obs_list[-min_obs:])
 
     def get_object(self):
         random_choice = super().get_object()
-        if self.observations == 0:
+        if self.observation_count == 0:
             return random_choice
         else:
             history = self.choices.get(self.prev_choice)
