@@ -27,6 +27,15 @@ class Test_ai(unittest.TestCase):
         self.assertEqual(ai.observation_count, 2)
         self.assertEqual(ai.observation_count, len(ai.obs_list))
 
+    def test_prev_choice_setting(self):
+        ai = markovRPS(2)
+        selections = "R P R S R S R".split()
+        for i in selections:
+            ai.update(rps(i))
+
+        latest_moves = (rps("S"), rps("R"))
+        self.assertEqual(latest_moves, ai.prev_choice)
+
     def test_update_calls_add_observation(self):
         with patch.object(markovRPS, "_add_observation") as mock_method:
             ai = markovRPS()
@@ -58,7 +67,7 @@ class Test_ai(unittest.TestCase):
 
     def test_get_next_object_with_highest_probability(self):
         # Fixing random generator to alway start checking with first object
-        with patch.object(SimpleRPS, 'get_object') as mock_random:
+        with patch.object(SimpleRPS, "get_object") as mock_random:
             mock_random.return_value = rps("R")
             ai = markovRPS()
             selections = "R P R S R S R".split()
@@ -71,6 +80,22 @@ class Test_ai(unittest.TestCase):
             self.assertEqual(ai.prev_choice, (rps("R"),))
             # Scissors have highest probability next and rock beats scissors
             self.assertEqual(next_winning_prediction, rps("R"))
+
+    def test_get_next_object_with_highest_probability_second_lvl(self):
+        # Fixing random generator to alway start checking with first object
+        with patch.object(SimpleRPS, "get_object") as mock_random:
+            mock_random.return_value = rps("R")
+            ai = markovRPS(2)
+            selections = "S R P S R P S R R S R".split()
+            for i in selections:
+                ai.update(rps(i))
+
+            next_winning_prediction = ai.get_object()
+
+            self.assertEqual(ai.observation_count, len(selections))
+            self.assertEqual(ai.prev_choice, (rps("S"), rps("R"),))
+            # Scissors have highest probability next and rock beats scissors
+            self.assertEqual(next_winning_prediction, rps("S"))
 
     def test_second_order_markov_chain_matrix(self):
         ai = markovRPS(history_length=2)
