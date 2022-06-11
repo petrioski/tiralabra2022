@@ -73,7 +73,7 @@ class markovRPS(SimpleRPS):
         return choices
 
     def update(self, next: rps):
-        if self.observation_count > 0:
+        if self.observation_count >= self.history_len:
             self.choices[self.prev_choice][next] += 1
         self._add_observation(next)
 
@@ -85,7 +85,7 @@ class markovRPS(SimpleRPS):
 
     def get_object(self):
         random_choice = super().get_object()
-        if self.observation_count == 0:
+        if self.observation_count < self.history_len:
             return random_choice
         else:
             history = self.choices.get(self.prev_choice)

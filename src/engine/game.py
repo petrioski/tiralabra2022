@@ -16,7 +16,7 @@ class RockPaperScissors:
         self.plr1 = p1
         self.plr2 = p2
         self.interrupt = False
-        self.max_points = 3
+        self.max_points = 30
         self.round_count = 1
         self.help = Instructions()
         self.reporter = Report()

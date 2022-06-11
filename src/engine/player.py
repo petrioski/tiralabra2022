@@ -17,14 +17,14 @@ class Player:
             Player points. One point per won round
     """
 
-    def __init__(self, name: str, ai: bool = False) -> None:
+    def __init__(self, name: str, ai: bool = False, level: int = 1) -> None:
         self.name = name
         self.__points = 0
         self.__automated = ai
 
         if ai:
             # self.__ai = SimpleRPS()
-            self.__ai = markovRPS()
+            self.__ai = markovRPS(level)
 
     def __str__(self) -> str:
         """

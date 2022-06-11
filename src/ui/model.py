@@ -9,7 +9,7 @@ class ui:
 
     def start(self):
         plr1 = Player("Human", False)
-        plr2 = Player("Computer", True)
+        plr2 = Player("Computer", True, 2)
         rps = RockPaperScissors(plr1, plr2)
         ins = Instructions()
         ins.welcome()
