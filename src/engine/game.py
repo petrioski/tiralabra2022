@@ -5,6 +5,8 @@ from engine.round import Round
 from resources.instructions import Instructions
 from ui.reporter import Report
 
+PERFORMANCE_TEST = False
+
 
 class RockPaperScissors:
     """
@@ -12,19 +14,24 @@ class RockPaperScissors:
     and keeping score
     """
 
-    def __init__(self, p1: Player, p2: Player) -> None:
+    def __init__(self, p1: Player, p2: Player, rounds: int = 3) -> None:
         self.plr1 = p1
         self.plr2 = p2
         self.interrupt = False
-        self.max_points = 30
+        self.max_points = rounds
+        self.max_rounds = rounds
         self.round_count = 1
         self.help = Instructions()
         self.reporter = Report()
+        self.p1_win_stats = list()
 
-    def play_game(self) -> None:
+    def play_game(self) -> bool:
         """
         Loops round of RPS game until conditions for continuing the game are
-        not met
+        not met.
+
+        Returns:
+            bool: True if user interrupted game, False otherwise
         """
         while self._continue_game():
             self.reporter.new_round_shoutout(self.round_count)
@@ -62,14 +69,7 @@ class RockPaperScissors:
 
         self._scoreboard(is_final=True)
 
-    # def _game_score(self) -> str:
-    #     """
-    #     Formats string of current game score
-
-    #     Returns:
-    #         str: Game score Player 1 poinst - Player 2 points
-    #     """
-    #     return f"{self.plr1.points()} - {self.plr2.points()}"
+        return self.interrupt
 
     def _leading_player(self) -> str:
         """
@@ -84,18 +84,6 @@ class RockPaperScissors:
             winner = self.plr2.name
         return winner
 
-    # def _summary(self):
-    #     """
-    #     Prints final score before exiting the game
-    #     """
-    #     if self.interrupt:
-    #         return "Game quitted"
-    #     else:
-    #         return (
-    #             "Final results:\n"
-    #             f"{self._leading_player()} wins by {self._game_score()}"
-    #         )
-
     def _scoreboard(self, is_final: bool = False):
         """Formulates current game scoreboard
 
@@ -105,13 +93,21 @@ class RockPaperScissors:
         point_difference = abs(self.plr1.points() - self.plr2.points())
         self.reporter.game_score(self.plr1.points(), self.plr2.points())
 
+        total_points = self.plr1.points() + self.plr2.points()
+
+        if total_points > 0:
+            p1_win_pct = self.plr1.points() / total_points
+        else:
+            p1_win_pct = 0.0
+
+        self.p1_win_stats.append(round(p1_win_pct, 3))
+
+        if PERFORMANCE_TEST and is_final:
+            for r in self.p1_win_stats:
+                print(r)
+
         if point_difference == 0:
             self.reporter.game_status_even(is_final)
-        # else:
-        # if not is_final:
-        #     self.reporter.game_leader(
-        #         self._leading_player(), point_difference, is_final
-        #     )
         else:
             self.reporter.game_leader(
                 self._leading_player(), point_difference, is_final
@@ -123,13 +119,15 @@ class RockPaperScissors:
         either player has reached maximum points
 
         Returns:
-            bool: True of False
+            bool: True or False
         """
 
         if (
             self.plr1.points() >= self.max_points
             or self.plr2.points() >= self.max_points
         ):
+            return False
+        elif self.round_count >= self.max_rounds:
             return False
         else:
             return not self.interrupt
