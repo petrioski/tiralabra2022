@@ -45,7 +45,7 @@ class RoundResult:
 
     def evaluate_winner(self) -> int:
         """
-        _summary_
+        Evaluates round winner
 
         Returns:
             int: Returns 0 if players have selected the same object
@@ -60,15 +60,3 @@ class RoundResult:
 
     def is_draw(self):
         return self.p1 == self.p2
-
-    # def new_round(self) -> int:
-    #     # get
-    #     # self.p1_ans = self.p1.get_answer()
-    #     # self.p2_ans = self.p2.get_answer()
-
-    #     # print(f"Objects chosen: {self.p1} - {self.p2}")
-
-    #     # if self.is_draw():
-    #     #     return 0
-
-    #     return self.evaluate_winner()
