@@ -4,6 +4,8 @@
 
 [Project implementation](documentation/implementation.md)
 
+[Test report](documentation/test.md)
+
 ## Weekly reports
 
 [Week 6](documentation/weekly_reports/week6.md)
@@ -17,9 +19,3 @@
 [Week 2](documentation/weekly_reports/week2.md)
 
 [Week 1](documentation/weekly_reports/week1.md)
-
-## Testing coverage
-
-[Coverage](documentation/coverage/coverage.txt)
-
-[Test report](documentation/test.md)
