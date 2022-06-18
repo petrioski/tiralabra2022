@@ -28,6 +28,9 @@ class SimpleRPS:
         """
         return random.choice(self.objects)
 
+    def update(self, next: rps):
+        pass
+
 
 class markovRPS(SimpleRPS):
     """_summary_
