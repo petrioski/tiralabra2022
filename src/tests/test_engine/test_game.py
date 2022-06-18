@@ -1,15 +1,10 @@
 from unittest import TestCase
 from unittest.mock import patch
 
-# from unittest.mock import Mock
-# import engine.game
 from engine.player import Player
 from engine.game import RockPaperScissors
 from ui.reporter import Report
 from resources.instructions import Instructions
-
-# from resources.selections import RPS_object as rps
-# from resources.instructions import Instructions
 
 
 class Test_game(TestCase):
@@ -64,22 +59,6 @@ class Test_game(TestCase):
             game = RockPaperScissors(p1, p2)
             game.play_game()
             mock_method.assert_called_once_with()
-
-    # def test_game_is_draw_text(self):
-    #     p1 = Player("A", True)
-    #     p2 = Player("B", True)
-    #     game = RockPaperScissors(p1, p2)
-    #     p1.add_point()
-    #     p2.add_point()
-    #     self.assertIn("Game is at draw", game._scoreboard())
-
-    # def test_leading_game_text(self):
-    #     p1 = Player("A", True)
-    #     p2 = Player("B", True)
-    #     game = RockPaperScissors(p1, p2)
-    #     p2.add_point()
-    #     self.assertIn("leads ", game._scoreboard())
-    #     self.assertIn("B", game._leading_player())
 
     def test_leader_name_text(self):
         p1 = Player("A", True)
