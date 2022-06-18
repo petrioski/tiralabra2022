@@ -1,5 +1,5 @@
 # from engine.ai import SimpleRPS
-from engine.ai import markovRPS
+from engine.ai import markovRPS, SimpleRPS
 from resources.selections import RPS_object as rps
 from ui.reader import Selection_reader
 
@@ -23,8 +23,10 @@ class Player:
         self.__automated = ai
 
         if ai:
-            # self.__ai = SimpleRPS()
-            self.__ai = markovRPS(level)
+            if level == 0:
+                self.__ai = SimpleRPS()
+            else:
+                self.__ai = markovRPS(level)
 
     def __str__(self) -> str:
         """
