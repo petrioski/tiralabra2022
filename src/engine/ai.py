@@ -127,11 +127,9 @@ class multiAi(SimpleRPS):
         self, max_degree: int = 5, focus_length: int = 3, show_stats=False
     ) -> None:
         super().__init__()
-        # self.observation_count = 0
         self.max_dg = max_degree
         self.fl = focus_length
         self.show_stats = show_stats
-        # init mv chains 1 - 5
         self.mcs = dict()
         for i in range(0, self.max_dg):
             self.mcs[i] = markovRPS(i + 1)
@@ -158,7 +156,6 @@ class multiAi(SimpleRPS):
         return best_obj
 
     def update(self, next: rps):
-        # self.observation_count += 1
         for i in range(0, self.max_dg):
             next_ai = self.mcs.get(i)
             next_ai.update(next)
