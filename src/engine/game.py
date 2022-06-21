@@ -1,7 +1,5 @@
-from engine.player import Player
 from engine.round import Round
-
-# from resources.selections import RPS_object
+from engine.player import Player
 from resources.instructions import Instructions
 from ui.reporter import Report
 
@@ -127,7 +125,7 @@ class RockPaperScissors:
             or self.plr2.points() >= self.max_points
         ):
             return False
-        elif self.round_count >= self.max_rounds:
+        elif self.round_count > self.max_rounds:
             return False
         else:
             return not self.interrupt
