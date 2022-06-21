@@ -36,9 +36,12 @@ class Selection_reader:
     def read_markov_level(self, name: str) -> int:
         answer = -1
         while answer < 0:
-            response = input(f"Select Markov chain level for {name}: ")
+            response = input(
+                "Select maximum Markov chain "
+                f"degree for {name} (between 1-10): "
+            )
             if self.is_valid_number(response, 0):
-                if int(response) >= 1 or int(response) <= 10:
+                if int(response) >= 1 and int(response) <= 10:
                     answer = int(response)
         return answer
 
