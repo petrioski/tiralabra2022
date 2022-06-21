@@ -4,7 +4,7 @@
 
 Unit tests are implemented with unittest module in python and reporting with coverage module. Currently the testing coverage is 97%, down from 100% after most recent refactoring and new features.
 
-```
+```text
 Name                        Stmts   Miss Branch BrPart  Cover   Missing
 -----------------------------------------------------------------------
 engine/ai.py                   54      1     20      0    99%   32
