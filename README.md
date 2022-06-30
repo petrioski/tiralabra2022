@@ -6,6 +6,8 @@
 
 [Test report](documentation/test.md)
 
+[User guide](documentation/user_guide.md)
+
 ## Weekly reports
 
 [Week 6](documentation/weekly_reports/week6.md)
