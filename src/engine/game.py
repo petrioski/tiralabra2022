@@ -3,13 +3,29 @@ from engine.player import Player
 from resources.instructions import Instructions
 from ui.reporter import Report
 
-PERFORMANCE_TEST = False
-
 
 class RockPaperScissors:
     """
     Game class responsible of looping rounds, handling players' input
     and keeping score
+
+    Attributes:
+        plr1 : Player
+            Player 1
+        plr2 : Player
+            Player 2
+        interrupt : bool
+            If human player receives quit command as input,
+            parameter is set to True and game will be exited.
+            Otherwise False and game can continue.
+        max_rounds : int
+            Game length defined as number of rounds
+        round_count : int
+            Number of played rounds
+        help : Instructions
+            Instruction print outs if user needs help
+        reporter : Report
+            Handles game status reporting and printouts
     """
 
     def __init__(self, p1: Player, p2: Player, rounds: int = 3) -> None:
@@ -21,7 +37,6 @@ class RockPaperScissors:
         self.round_count = 1
         self.help = Instructions()
         self.reporter = Report()
-        self.p1_win_stats = list()
 
     def play_game(self) -> bool:
         """
@@ -58,7 +73,7 @@ class RockPaperScissors:
 
                 self._scoreboard()
                 self.round_count += 1
-                # send data to markov
+
                 self.plr1.store_opponent_move(p2_sel)
                 self.plr2.store_opponent_move(p1_sel)
 
@@ -82,27 +97,14 @@ class RockPaperScissors:
             winner = self.plr2.name
         return winner
 
-    def _scoreboard(self, is_final: bool = False):
+    def _scoreboard(self, is_final: bool = False) -> None:
         """Formulates current game scoreboard
 
-        Returns:
+        Parameters:
             str: scoreboard text
         """
         point_difference = abs(self.plr1.points() - self.plr2.points())
         self.reporter.game_score(self.plr1.points(), self.plr2.points())
-
-        total_points = self.plr1.points() + self.plr2.points()
-
-        if total_points > 0:
-            p1_win_pct = self.plr1.points() / total_points
-        else:
-            p1_win_pct = 0.0
-
-        self.p1_win_stats.append(round(p1_win_pct, 3))
-
-        if PERFORMANCE_TEST and is_final:
-            for r in self.p1_win_stats:
-                print(r)
 
         if point_difference == 0:
             self.reporter.game_status_even(is_final)
