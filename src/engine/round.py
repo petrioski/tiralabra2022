@@ -4,6 +4,23 @@ from resources.rules import Rules
 
 
 class Round:
+    """
+    Handles events during one round of the game
+
+    Attributes:
+        pl1 : Player
+            player one
+        pl2 : Player
+            player two
+
+    Returns:
+        tuple (int, RPS_Object, RPS_object, bool, bool) :
+            Round result as int, 0 for draw, 1 for win of player 1,
+            2 for win of player 2. Player 1 selection as RPS_object.
+            Player 2 selection as RPS_object. True if user wants to quit and
+            pressed Q, False otherwise. Help_text as True if user wants to see
+            help and pressed H False otherwise
+    """
     def __init__(self, pl1: Player, pl2: Player) -> None:
         self.pl1 = pl1
         self.pl2 = pl2
@@ -58,5 +75,5 @@ class RoundResult:
         else:
             return 2
 
-    def is_draw(self):
+    def is_draw(self) -> bool:
         return self.p1 == self.p2
