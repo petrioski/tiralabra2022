@@ -1,4 +1,7 @@
 class Report:
+    """
+    Class responsible handling game status reporting as print outs
+    """
     def round_selections(self, p1: str, p2: str) -> None:
         print("Objects chosen: " f"{p1} - {p2}")
 
@@ -36,6 +39,3 @@ class Report:
 
     def game_interrupted(self):
         print("User quit the game!")
-
-    # def game_winner(self, leader_name: str, lead: int) -> None:
-    #     print(f"{leader_name} wins the game by {lead}")

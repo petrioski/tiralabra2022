@@ -5,6 +5,10 @@ from engine.player import Player
 
 
 class ui:
+    """
+    TODO: _summary_
+    """
+
     def __init__(self):
         self.ins = Instructions()
         self.sel = Selection_reader()
@@ -19,7 +23,7 @@ class ui:
         while play_again:
             interrupted = self.play()
             if not interrupted:
-                play_again = self.sel.play_again()
+                play_again = self.sel.ask_play_again()
             else:
                 break
 
@@ -39,7 +43,9 @@ class ui:
             return True
 
         rounds = self.sel.read_round_input()
-
+        # TODO: ask focus length and show stats
+        stats_on = self.sel.ask_show_stats()
+        focus_len = self.sel.ask_focus_length()
         if game_mode == 1:
             plr1 = Player("Player 1", False)
             p2_name = "Computer"
@@ -50,7 +56,9 @@ class ui:
             p2_name = "Computer 2"
 
         p2_lvl = self.sel.read_markov_level(p2_name)
-        plr2 = Player(p2_name, True, p2_lvl)
+        plr2 = Player(
+            p2_name, True, p2_lvl, show_stats=stats_on, ai_focus_len=focus_len
+        )
         rps = RockPaperScissors(plr1, plr2, rounds)
 
         return rps.play_game()

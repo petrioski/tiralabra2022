@@ -1,8 +1,12 @@
 class Selection_reader:
+    """
+    Class reads user input and handles converting input to correct type
+    """
+
     def read_round_input(self) -> int:
         answer = ""
         while not self.is_valid_number(answer):
-            answer = input("How many rounds: ")
+            answer = input("How many rounds?: ")
 
         return int(answer)
 
@@ -22,6 +26,7 @@ class Selection_reader:
                 "\t1 - You play against computer \n"
                 "\t2 - Simulation, computer vs. computer\n"
                 "\tQ - Quit\n"
+                "Enter game mode: "
             )
 
             if response.upper() == "Q":
@@ -45,7 +50,7 @@ class Selection_reader:
                     answer = int(response)
         return answer
 
-    def play_again(self) -> bool:
+    def ask_play_again(self) -> bool:
         while True:
             res = input("\n\nPlay again? (Y/N): ")
             if res.upper() == "Y":
@@ -53,8 +58,24 @@ class Selection_reader:
             elif res.upper() == "N":
                 return False
 
-    def read_input(self) -> str:
+    def ask_show_stats(self) -> bool:
+        while True:
+            res = input("Show AI stats? (Y/N): ")
+            if res.upper() == "Y":
+                return True
+            elif res.upper() == "N":
+                return False
 
+    def ask_focus_length(self) -> int:
+        answer = -1
+        min_focus = 1
+
+        while not self.is_valid_number(answer, min_focus):
+            answer = input("Choose focus length: ")
+
+        return int(answer)
+
+    def read_input(self) -> str:
         answer = ""
         while not self.is_valid(answer):
             answer = input("Choose object: ").upper()
