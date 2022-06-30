@@ -65,6 +65,28 @@ class Test_ai(unittest.TestCase):
         paper = rps("P")
         self.assertEqual(next_winning_prediction, paper)
 
+    def test_second_order_markov_chain_matrix(self):
+        ai = markovRPS(history_length=2)
+        test_key = (rps("R"), rps("R"))
+        test_key2 = (rps("R"), rps("S"))
+        test_key3 = (rps("S"), rps("R"))
+        moves_keys = ai.choices.keys()
+        self.assertIn(test_key, moves_keys)
+        self.assertIn(test_key2, moves_keys)
+        self.assertIn(test_key3, moves_keys)
+        self.assertEqual(len(moves_keys), 3**2)
+
+    def test_third_order_markov_chain_matrix(self):
+        ai = markovRPS(history_length=3)
+        test_key = (rps("R"), rps("R"), rps("R"))
+        test_key2 = (rps("R"), rps("S"), rps("P"))
+        test_key3 = (rps("S"), rps("R"), rps("R"))
+        moves_keys = ai.choices.keys()
+        self.assertIn(test_key, moves_keys)
+        self.assertIn(test_key2, moves_keys)
+        self.assertIn(test_key3, moves_keys)
+        self.assertEqual(len(moves_keys), 3**3)
+
     def test_get_next_object_with_highest_probability(self):
         # Fixing random generator to alway start checking with first object
         with patch.object(SimpleRPS, "get_object") as mock_random:
@@ -96,25 +118,3 @@ class Test_ai(unittest.TestCase):
             self.assertEqual(ai.prev_choice, (rps("S"), rps("R"),))
             # Scissors have highest probability next and rock beats scissors
             self.assertEqual(next_winning_prediction, rps("S"))
-
-    def test_second_order_markov_chain_matrix(self):
-        ai = markovRPS(history_length=2)
-        test_key = (rps("R"), rps("R"))
-        test_key2 = (rps("R"), rps("S"))
-        test_key3 = (rps("S"), rps("R"))
-        moves_keys = ai.choices.keys()
-        self.assertIn(test_key, moves_keys)
-        self.assertIn(test_key2, moves_keys)
-        self.assertIn(test_key3, moves_keys)
-        self.assertEqual(len(moves_keys), 3**2)
-
-    def test_third_order_markov_chain_matrix(self):
-        ai = markovRPS(history_length=3)
-        test_key = (rps("R"), rps("R"), rps("R"))
-        test_key2 = (rps("R"), rps("S"), rps("P"))
-        test_key3 = (rps("S"), rps("R"), rps("R"))
-        moves_keys = ai.choices.keys()
-        self.assertIn(test_key, moves_keys)
-        self.assertIn(test_key2, moves_keys)
-        self.assertIn(test_key3, moves_keys)
-        self.assertEqual(len(moves_keys), 3**3)

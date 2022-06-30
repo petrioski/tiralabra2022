@@ -1,7 +1,7 @@
 from unittest import TestCase
 from unittest.mock import patch
 from engine.player import Player
-from engine.ai import markovRPS
+from engine.ai import markovRPS, SimpleRPS
 from resources.selections import RPS_object as rps
 
 
@@ -13,7 +13,7 @@ class Test_player(TestCase):
         self.p.add_point()
         self.assertEqual(1, self.p.points())
 
-    @patch('builtins.input', return_value='R')
+    @patch("builtins.input", return_value="R")
     def test_selecting_rock(self, mock_input):
         ans = self.p.get_answer()
         self.assertEqual(ans.name, "ROCK")
@@ -26,7 +26,13 @@ class Test_player(TestCase):
         score = self.p.score()
         self.assertEqual(score, "Person 0")
 
-    @patch.object(markovRPS, 'update')
+    @patch.object(SimpleRPS, "get_object")
+    def test_create_ai_player(self, simple_mock):
+        new_player = Player("test", ai=True, ai_degree=0)
+        new_player.get_answer()
+        simple_mock.assert_called_once()
+
+    @patch.object(markovRPS, "update")
     def test_store_opponent_move(self, mock_update):
         ai_player = Player("Computer", True)
         rock = rps("R")

@@ -24,6 +24,14 @@ class Test_game(TestCase):
         p1.add_point()
         self.assertEqual(game._continue_game(), False)
 
+    def test_max_rounds_reached(self):
+        p1 = Player("A", True)
+        p2 = Player("B", True)
+        game = RockPaperScissors(p1, p2, rounds=1)
+        game.max_points = 2
+        game.play_game()
+        self.assertEqual(game._continue_game(), False)
+
     @patch("builtins.input", side_effect=["H", "Q"])
     def test_get_help(self, input):
         with patch.object(Instructions, "game_instructions") as mock_method:

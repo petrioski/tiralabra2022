@@ -8,14 +8,14 @@ Unit tests are implemented with unittest module in python and reporting with cov
 Name                        Stmts   Miss Branch BrPart  Cover   Missing
 -----------------------------------------------------------------------
 engine/ai.py                  103      0     40      0   100%
-engine/game.py                 64      0     24      0   100%
+engine/game.py                 58      0     22      0   100%
 engine/player.py               34      0     12      0   100%
 engine/round.py                33      0     12      0   100%
 resources/instructions.py       8      0      2      0   100%
 resources/rules.py             15      0      8      0   100%
 resources/selections.py         7      0      2      0   100%
 -----------------------------------------------------------------------
-TOTAL                         264      0    100      0   100%
+TOTAL                         258      0     98      0   100%
 ```
 
 Tests can be reproduced with running the `coverage run --branch -m unittest && coverage report -m` commands in src folder.

@@ -21,7 +21,7 @@ class Test_instructions(unittest.TestCase):
             "\t- Player chooses rock, paper or scissors \n"
             "\t- The goal is to beat opponent's choice. \n"
             "\t- Rock beats scissors, paper rock and scissors paper.\n"
-            "\t- First player to reach three points wins \n"
+            "\t- One point awarded per round and player with most points wins the game \n"
         )
         help_txt = (
             "\nType your answer with a letter \n"
