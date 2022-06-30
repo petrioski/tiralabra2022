@@ -1,12 +1,14 @@
-# from engine.ai import SimpleRPS
-from engine.ai import markovRPS, SimpleRPS
+from engine.ai import SimpleRPS, multiAi
 from resources.selections import RPS_object as rps
 from ui.reader import Selection_reader
 
 
 class Player:
     """
-    Player class
+    Create RPS Player. Available types are human and automated computer player.
+    Human player accepts keyboard input and is user playable character.
+    Automated computer player does not accept input and it uses multiple
+    Markov chain degrees to choose next objects automatically.
 
     Attributes:
         name : str
@@ -17,16 +19,39 @@ class Player:
             Player points. One point per won round
     """
 
-    def __init__(self, name: str, ai: bool = False, level: int = 1) -> None:
+    def __init__(
+        self,
+        name: str,
+        ai: bool = False,
+        ai_degree: int = 1,
+        show_stats: bool = False,
+        ai_focus_len: int = 3,
+    ) -> None:
+        """
+        The constructor for Player class.
+
+        Parameters:
+            name : str
+                player's name
+            ai : bool
+                False creates instance of human player, True computer player
+            ai_degree :
+                Defines maximum degree of Markov chain for MultiAi player
+            show_stats : bool
+                True prints statistics for multiAi inner operation during
+                the game, False does not print. Default value False
+        """
         self.name = name
         self.__points = 0
         self.__automated = ai
 
         if ai:
-            if level == 0:
+            if ai_degree == 0:
                 self.__ai = SimpleRPS()
             else:
-                self.__ai = markovRPS(level)
+                self.__ai = multiAi(
+                    ai_degree, show_stats=show_stats, focus_length=ai_focus_len
+                )
 
     def __str__(self) -> str:
         """
@@ -74,7 +99,7 @@ class Player:
             selection_index = Selection_reader().read_input()
             return rps(selection_index)
 
-    def store_opponent_move(self, obj: rps):
+    def store_opponent_move(self, obj: rps) -> None:
         """
         Stores opponent's selection
 
@@ -84,7 +109,7 @@ class Player:
         if self.ai():
             self.__ai.update(obj)
 
-    def ai(self):
+    def ai(self) -> bool:
         """
         Returns player type
 
@@ -93,7 +118,7 @@ class Player:
         """
         return self.__automated
 
-    def is_leading(self, player):
+    def is_leading(self, player) -> bool:
         """
         Compares players points to other
 
